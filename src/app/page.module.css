@@ -68,10 +68,7 @@
   padding: 0 20px;
   border: none;
   border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -165,4 +162,51 @@ a.secondary {
   .logo {
     filter: invert();
   }
+}
+
+.button {
+  padding: 20px;
+  background-color: blue;
+}
+
+.redButton {
+  background-color: red;
+}
+
+.disabledButton {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.mainBody {
+  background-color: #e5e8ec;
+  min-height: 100vh;
+}
+
+.homepageBody {
+  background-color: #5dc9a8;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (max-width: 1100px) {
+  .homepageBody {
+    flex-direction: column-reverse;
+  }
+}
+
+.heroText {
+  max-width: 600px;
+}
+
+.buttonContainer {
+  margin-top: 2rem;
+  /* margin-left: 1rem; */
+}
+
+.buttonContainer button:first-child {
+  margin-right: 20px;
 }

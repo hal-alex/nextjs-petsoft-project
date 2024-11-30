@@ -1,0 +1,14 @@
+.h1 {
+  line-height: 2rem;
+  color: white;
+}
+
+.seconSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats {
+  text-align: center;
+}
