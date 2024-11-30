@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import style from "./page.module.css"
 import Link from "next/link"
+import PetContextProvider from "@/app/context/pet-context-provider"
+import { Pet } from "@/components/PetList"
 
 type LayoutProps = {
   children: React.ReactNode
@@ -12,12 +14,22 @@ export const metadata: Metadata = {
 }
 
 const Layout = async ({ children }: LayoutProps) => {
+  const response = await fetch(
+    "https://bytegrad.com/course-assets/projects/petsoft/api/pets",
+  )
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data")
+  }
+
+  const data: Pet[] = await response.json()
+
   return (
     <>
       <BackgroundImage />
       <div className={style.container}>
         <AppHeader />
-        {children}
+        <PetContextProvider data={data}>{children}</PetContextProvider>
         <AppFooter />
       </div>
     </>
