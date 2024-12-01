@@ -3,6 +3,7 @@ import style from "./page.module.css"
 import Link from "next/link"
 import PetContextProvider from "@/app/context/pet-context-provider"
 import { Pet } from "@/components/PetList"
+import SearchContextProvider from "@/app/context/search-context-provider"
 
 type LayoutProps = {
   children: React.ReactNode
@@ -29,7 +30,9 @@ const Layout = async ({ children }: LayoutProps) => {
       <BackgroundImage />
       <div className={style.container}>
         <AppHeader />
-        <PetContextProvider data={data}>{children}</PetContextProvider>
+        <SearchContextProvider>
+          <PetContextProvider data={data}>{children}</PetContextProvider>
+        </SearchContextProvider>
         <AppFooter />
       </div>
     </>

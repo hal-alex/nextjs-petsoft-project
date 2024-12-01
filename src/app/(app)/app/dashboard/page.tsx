@@ -3,6 +3,8 @@ import PetList from "@/components/PetList"
 import SearchForm from "@/components/SearchForm"
 import PetDetails from "@/components/PetDetails"
 import ContentBlock from "@/components/ContentBlock"
+import Stats from "@/components/Stats"
+import PetButton from "@/components/PetButton"
 
 const Dashboard = async () => {
   return (
@@ -13,8 +15,7 @@ const Dashboard = async () => {
           <p>Manage your pet daycare with ease</p>
         </section>
         <section className={style.stats}>
-          <p>2</p>
-          <p>current guests</p>
+          <Stats />
         </section>
       </div>
       <div className={style.containerDetails}>
@@ -24,6 +25,9 @@ const Dashboard = async () => {
         <div className={style.gridItemSecond}>
           <ContentBlock>
             <PetList />
+            <div className={style.buttonContainer}>
+              <PetButton />
+            </div>
           </ContentBlock>
         </div>
 

@@ -29,6 +29,7 @@
 .gridItemSecond {
   grid-row: 2/3;
   grid-column: 1;
+  position: relative;
 }
 
 .gridItemThird {
@@ -51,4 +52,10 @@
   .gridItemThird {
     grid-row: auto;
   }
+}
+
+.buttonContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }

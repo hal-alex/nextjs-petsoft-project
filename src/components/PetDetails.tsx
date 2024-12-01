@@ -5,10 +5,10 @@ import style from "./components.module.css"
 import { usePetContext } from "@/app/context/hooks"
 
 const PetDetails = () => {
-  const { selectedPet } = usePetContext()
+  const { selectedPet, handleCheckOutPet } = usePetContext()
 
   if (!selectedPet) {
-    return null
+    return <p>No pet selected</p>
   }
 
   return (
@@ -21,6 +21,12 @@ const PetDetails = () => {
           alt="Pet image"
         />
         <h2>{selectedPet.name}</h2>
+        <div>
+          <button>Edit</button>
+          <button onClick={() => handleCheckOutPet(selectedPet.id)}>
+            Check Out
+          </button>
+        </div>
       </div>
       <div>
         <div>

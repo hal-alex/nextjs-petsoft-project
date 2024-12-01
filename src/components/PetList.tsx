@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import style from "./components.module.css"
-import { usePetContext } from "@/app/context/hooks"
+import { usePetContext, useSearchContext } from "@/app/context/hooks"
 import clsx from "clsx"
 
 export type Pet = {
@@ -16,9 +16,15 @@ export type Pet = {
 
 const PetList = () => {
   const { pets, selectedId, handleChangePetId } = usePetContext()
+  const { searchTerm } = useSearchContext()
+
+  const filteredPets = pets.filter((pet) =>
+    pet.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
   return (
     <ul className={style.petList}>
-      {pets.map((pet) => (
+      {filteredPets.map((pet) => (
         <li
           key={pet.id}
           className={clsx({ [style.activeList]: selectedId === pet.id })}
