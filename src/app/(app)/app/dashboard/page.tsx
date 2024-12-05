@@ -4,9 +4,14 @@ import SearchForm from "@/components/SearchForm"
 import PetDetails from "@/components/PetDetails"
 import ContentBlock from "@/components/ContentBlock"
 import Stats from "@/components/Stats"
-import PetButton from "@/components/PetButton"
+import DialogButton from "@/components/DialogButton"
+import AddingPetPopup from "@/components/AddingPetPopup"
 
-const Dashboard = async () => {
+const Dashboard = () => {
+  // console.log(process.browser, "process.browser")
+
+  // console.log(typeof window, "typeof window")
+
   return (
     <main>
       <div className={style.seconSection}>
@@ -26,7 +31,9 @@ const Dashboard = async () => {
           <ContentBlock>
             <PetList />
             <div className={style.buttonContainer}>
-              <PetButton />
+              <DialogButton content={<AddingPetPopup actionType={"add"} />}>
+                Add pet
+              </DialogButton>
             </div>
           </ContentBlock>
         </div>

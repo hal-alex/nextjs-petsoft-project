@@ -4,6 +4,7 @@ import Link from "next/link"
 import PetContextProvider from "@/app/context/pet-context-provider"
 import { Pet } from "@/components/PetList"
 import SearchContextProvider from "@/app/context/search-context-provider"
+import { DialogProvider } from "@/app/context/dialog-context-provider"
 
 type LayoutProps = {
   children: React.ReactNode
@@ -30,9 +31,11 @@ const Layout = async ({ children }: LayoutProps) => {
       <BackgroundImage />
       <div className={style.container}>
         <AppHeader />
-        <SearchContextProvider>
-          <PetContextProvider data={data}>{children}</PetContextProvider>
-        </SearchContextProvider>
+        <DialogProvider>
+          <SearchContextProvider>
+            <PetContextProvider data={data}>{children}</PetContextProvider>
+          </SearchContextProvider>
+        </DialogProvider>
         <AppFooter />
       </div>
     </>
