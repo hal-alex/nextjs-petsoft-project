@@ -3,6 +3,9 @@
 import Image from "next/image"
 import style from "./components.module.css"
 import { usePetContext } from "@/app/context/hooks"
+import DialogButton from "./DialogButton"
+import { CustomDialog } from "./CustomDialog"
+import AddingPetPopup from "./AddingPetPopup"
 
 const PetDetails = () => {
   const { selectedPet, handleCheckOutPet } = usePetContext()
@@ -22,7 +25,9 @@ const PetDetails = () => {
         />
         <h2>{selectedPet.name}</h2>
         <div>
-          <button>Edit</button>
+          <DialogButton content={<AddingPetPopup actionType="edit" />}>
+            Edit
+          </DialogButton>
           <button onClick={() => handleCheckOutPet(selectedPet.id)}>
             Check Out
           </button>

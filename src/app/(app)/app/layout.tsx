@@ -31,11 +31,11 @@ const Layout = async ({ children }: LayoutProps) => {
       <BackgroundImage />
       <div className={style.container}>
         <AppHeader />
-        <DialogProvider>
-          <SearchContextProvider>
-            <PetContextProvider data={data}>{children}</PetContextProvider>
-          </SearchContextProvider>
-        </DialogProvider>
+        <PetContextProvider data={data}>
+          <DialogProvider>
+            <SearchContextProvider>{children}</SearchContextProvider>
+          </DialogProvider>
+        </PetContextProvider>
         <AppFooter />
       </div>
     </>
