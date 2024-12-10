@@ -1,24 +1,11 @@
 "use client"
 import Image from "next/image"
 import styles from "../page.module.css"
-import { useState } from "react"
 import clsx from "clsx"
 import marketingStyle from "./page.module.css"
 import Link from "next/link"
 
 export default function Home() {
-  const [isRed, setIsRed] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(false)
-
-  const returnArray = <T extends string | any[]>(arr: T): T[] => {
-    if (typeof arr === "string") {
-      return [arr]
-    } else {
-      return [...arr]
-    }
-  }
-
-  console.log("rendered")
   return (
     <main className={clsx(styles.homepageBody)}>
       <Image
@@ -35,14 +22,7 @@ export default function Home() {
         </h1>
         <p className={styles.heroText}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
+          industry.
         </p>
         <div className={styles.buttonContainer}>
           <button>

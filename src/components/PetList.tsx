@@ -6,12 +6,12 @@ import { usePetContext, useSearchContext } from "@/app/context/hooks"
 import clsx from "clsx"
 
 export type Pet = {
-  id: string
+  id: number
   name: string
-  imageUrl: string
+  imageUrl: string | null
   ownerName: string
   age: number
-  notes: string
+  notes: string | null
 }
 
 const PetList = () => {
@@ -31,7 +31,7 @@ const PetList = () => {
         >
           <button onClick={() => handleChangePetId(pet.id)}>
             <Image
-              src={pet.imageUrl}
+              src={pet.imageUrl!}
               alt="Pet image"
               width={45}
               height={45}

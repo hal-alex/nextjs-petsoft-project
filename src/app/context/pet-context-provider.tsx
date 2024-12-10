@@ -4,11 +4,11 @@ import { createContext, useState } from "react"
 
 type TPetContext = {
   pets: Pet[]
-  selectedId: string | null
-  handleChangePetId: (id: string) => void
+  selectedId: number | null
+  handleChangePetId: (id: number) => void
   selectedPet: Pet | undefined
   amountOfPets: number
-  handleCheckOutPet: (id: string) => void
+  handleCheckOutPet: (id: number) => void
 }
 
 export const PetContext = createContext<TPetContext | null>(null)
@@ -21,15 +21,15 @@ const PetContextProvider = ({
   children: React.ReactNode
 }) => {
   const [pets, setPets] = useState(data)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
 
-  const handleChangePetId = (id: string) => setSelectedId(id)
+  const handleChangePetId = (id: number) => setSelectedId(id)
 
   const selectedPet = pets.find((pet) => pet.id === selectedId)
 
   const amountOfPets = pets.length
 
-  const handleCheckOutPet = (id: string) => {
+  const handleCheckOutPet = (id: number) => {
     setPets((prev) => prev.filter((pet) => pet.id !== id))
     setSelectedId(null)
   }

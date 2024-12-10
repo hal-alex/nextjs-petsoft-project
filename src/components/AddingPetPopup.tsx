@@ -14,8 +14,6 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const formData = new FormData(e.currentTarget)
-    const pet = Object.fromEntries(formData.entries())
     closeDialog()
   }
 
@@ -41,20 +39,22 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
           id="imageUrl"
           type="text"
           name="imageUrl"
-          defaultValue={actionType === "edit" ? selectedPet?.imageUrl : ""}
+          defaultValue={
+            actionType === "edit" ? selectedPet?.imageUrl ?? "" : ""
+          }
         />
         <label htmlFor="age">Age</label>
         <input
           id="age"
           type="number"
           name="age"
-          defaultValue={actionType === "edit" ? selectedPet?.age : ""}
+          defaultValue={actionType === "edit" ? selectedPet?.age : "fff"}
         />
         <label htmlFor="notes">Notes</label>
         <textarea
           id="notes"
           name="notes"
-          defaultValue={actionType === "edit" ? selectedPet?.notes : ""}
+          defaultValue={actionType === "edit" ? selectedPet?.notes ?? "" : ""}
         />
       </div>
       <button type="submit">

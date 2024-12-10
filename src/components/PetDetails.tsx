@@ -4,7 +4,6 @@ import Image from "next/image"
 import style from "./components.module.css"
 import { usePetContext } from "@/app/context/hooks"
 import DialogButton from "./DialogButton"
-import { CustomDialog } from "./CustomDialog"
 import AddingPetPopup from "./AddingPetPopup"
 
 const PetDetails = () => {
@@ -18,7 +17,7 @@ const PetDetails = () => {
     <section className={style.petDetails}>
       <div className={style.petDetailsHeader}>
         <Image
-          src={selectedPet.imageUrl}
+          src={selectedPet.imageUrl!}
           width={75}
           height={75}
           alt="Pet image"
