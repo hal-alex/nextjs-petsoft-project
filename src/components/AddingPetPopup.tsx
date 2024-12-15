@@ -5,6 +5,7 @@ import { useDialog } from "@/app/context/dialog-context-provider"
 import { useState } from "react"
 import { InsertPet } from "@/db/schema"
 import { addPet } from "@/actions/actions"
+import AddingPetPopUpButton from "./AddingPetPopUpButton"
 
 type AddingPetPopupProps = {
   actionType: "add" | "edit"
@@ -22,15 +23,18 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
     notes: selectedPet?.notes ?? "",
   }))
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }))
   }
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    await new Promise((resolve) => setTimeout(resolve, 3000))
     addPet(formData)
     closeDialog()
   }
@@ -59,7 +63,7 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
           id="imageUrl"
           type="text"
           name="imageUrl"
-          value={formData.imageUrl}
+          value={formData.imageUrl ?? ""}
           onChange={handleChange}
         />
         <label htmlFor="age">Age</label>
@@ -74,13 +78,11 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
         <textarea
           id="notes"
           name="notes"
-          value={formData.notes}
+          value={formData.notes ?? ""}
           onChange={handleChange}
         />
       </div>
-      <button type="submit">
-        {actionType === "add" ? "Add pet" : "Edit pet"}
-      </button>
+      <AddingPetPopUpButton actionType={actionType} />
     </form>
   )
 }

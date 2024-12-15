@@ -31,7 +31,10 @@ const PetList = () => {
         >
           <button onClick={() => handleChangePetId(pet.id)}>
             <Image
-              src={pet.imageUrl!}
+              src={
+                pet.imageUrl ||
+                "https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png"
+              }
               alt="Pet image"
               width={45}
               height={45}
