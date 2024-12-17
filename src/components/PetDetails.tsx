@@ -5,13 +5,18 @@ import style from "./components.module.css"
 import { usePetContext } from "@/app/context/hooks"
 import DialogButton from "./DialogButton"
 import AddingPetPopup from "./AddingPetPopup"
+import { deletePet } from "@/actions/actions"
+import { startTransition, useTransition } from "react"
+import { revalidatePath } from "next/cache"
 
 const PetDetails = () => {
-  const { selectedPet, handleCheckOutPet } = usePetContext()
+  const { selectedPet } = usePetContext()
 
   if (!selectedPet) {
     return <p>No pet selected</p>
   }
+
+  const [isPending, setIsPending] = useTransition()
 
   return (
     <section className={style.petDetails}>
@@ -27,8 +32,14 @@ const PetDetails = () => {
           <DialogButton content={<AddingPetPopup actionType="edit" />}>
             Edit
           </DialogButton>
-          <button onClick={() => handleCheckOutPet(selectedPet.id)}>
-            Check Out
+          <button
+            onClick={async () => {
+              startTransition(async () => {
+                await deletePet(selectedPet.id)
+              })
+            }}
+          >
+            {isPending ? "Deleting..." : "Delete"}
           </button>
         </div>
       </div>

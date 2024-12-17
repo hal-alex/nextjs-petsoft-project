@@ -4,7 +4,7 @@ import style from "./components.module.css"
 import { useDialog } from "@/app/context/dialog-context-provider"
 import { useState } from "react"
 import { InsertPet } from "@/db/schema"
-import { addPet } from "@/actions/actions"
+import { addPet, updatePet } from "@/actions/actions"
 import AddingPetPopUpButton from "./AddingPetPopUpButton"
 
 type AddingPetPopupProps = {
@@ -34,8 +34,23 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-    addPet(formData)
+    // await new Promise((resolve) => setTimeout(resolve, 3000))
+
+    if (actionType === "edit" && selectedPet?.id) {
+      const error = await updatePet(selectedPet?.id, formData)
+      if (error) {
+        alert(error.message)
+        return
+      }
+    } else {
+      const error = await addPet(formData)
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+    }
+
     closeDialog()
   }
 
