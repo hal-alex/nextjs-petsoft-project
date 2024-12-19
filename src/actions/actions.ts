@@ -1,7 +1,13 @@
 "use server"
 
 import { db } from "@/db/connection"
-import { InsertPet, pets } from "@/db/schema"
+import {
+  InsertBlogPost,
+  InsertPet,
+  pets,
+  blogPost as blogPostFromDb,
+  insertBlogPostSchema,
+} from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -32,4 +38,9 @@ export const deletePet = async (petId: number) => {
   } catch (error) {
     return { message: "Could not delete pet" }
   }
+}
+
+export const addBlogPost = async (blogPost: InsertBlogPost) => {
+  const parsed = insertBlogPostSchema.safeParse(blogPost)
+  // await db.insert(blogPostFromDb).values(parsed).execute()
 }

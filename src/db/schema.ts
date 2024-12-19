@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core"
 
 import { InferSelectModel, InferInsertModel } from "drizzle-orm"
+import { createSelectSchema } from "drizzle-zod"
 
 export const pets = pgTable("pets", {
   id: serial().primaryKey().notNull(),
@@ -20,5 +21,18 @@ export const pets = pgTable("pets", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
+export const blogPost = pgTable("blog_post", {
+  id: serial().primaryKey().notNull(),
+  title: varchar("title").notNull(),
+  content: text("content").notNull(),
+  author: varchar("author"),
+  views: integer("views"),
+})
+
 export type SelectPet = InferSelectModel<typeof pets>
 export type InsertPet = InferInsertModel<typeof pets>
+
+export type SelectBlogPost = InferSelectModel<typeof blogPost>
+export type InsertBlogPost = InferInsertModel<typeof blogPost>
+
+export const insertBlogPostSchema = createSelectSchema(blogPost)
