@@ -10,6 +10,7 @@ import {
 } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { z } from "zod"
 
 export const addPet = async (pet: InsertPet) => {
   try {
@@ -41,6 +42,14 @@ export const deletePet = async (petId: number) => {
 }
 
 export const addBlogPost = async (blogPost: InsertBlogPost) => {
-  const parsed = insertBlogPostSchema.safeParse(blogPost)
-  // await db.insert(blogPostFromDb).values(parsed).execute()
+  try {
+    const parsed = insertBlogPostSchema.parse(blogPost)
+    await db.insert(blogPostFromDb).values(parsed).execute()
+    return { success: true }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: error.errors }
+    }
+    return { error: "Could not add blog post" }
+  }
 }
