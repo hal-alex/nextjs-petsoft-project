@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core"
 import { InferSelectModel, InferInsertModel } from "drizzle-orm"
 import { createInsertSchema } from "drizzle-zod"
+import { z } from "zod"
 
 export const pets = pgTable("pets", {
   id: serial().primaryKey().notNull(),
@@ -34,4 +35,6 @@ export type InsertPet = InferInsertModel<typeof pets>
 export type SelectBlogPost = InferSelectModel<typeof blogPost>
 export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
-export const insertBlogPostSchema = createInsertSchema(blogPost)
+export const insertBlogPostSchema = createInsertSchema(blogPost, {
+  views: (schema) => z.coerce.number(),
+})

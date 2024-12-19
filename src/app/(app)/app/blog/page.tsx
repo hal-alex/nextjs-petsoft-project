@@ -15,10 +15,9 @@ const page = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const eventName = e.target.name
     setForm({
       ...form,
-      [eventName]: eventName === "views" ? +e.target.value : e.target.value,
+      [e.target.name]: e.target.value,
     })
   }
 
