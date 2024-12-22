@@ -27,6 +27,7 @@ export const blogPost = pgTable("blog_post", {
   content: text("content").notNull(),
   author: varchar("author"),
   views: integer("views"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
 export type SelectPet = InferSelectModel<typeof pets>
@@ -36,5 +37,5 @@ export type SelectBlogPost = InferSelectModel<typeof blogPost>
 export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
 export const insertBlogPostSchema = createInsertSchema(blogPost, {
-  views: (_) => z.coerce.number().({ message: "Views must be a number" }),
-})
+  views: (schema) => z.coerce.number({ message: "Views must be a number" }),
+}).transform((data) => ({ ...data, author: data.author ?? "Alex" }))

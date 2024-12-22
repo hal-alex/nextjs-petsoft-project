@@ -1,0 +1,1 @@
+ALTER TABLE "blog_post" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;

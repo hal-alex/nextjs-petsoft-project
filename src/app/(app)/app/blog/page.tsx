@@ -48,13 +48,21 @@ const page = () => {
 
   return (
     <form
-      action={async () => {
+      onSubmit={async (e) => {
+        e.preventDefault()
+
         const result = await trigger()
+        console.log(result)
         if (!result) return
         const form = getValues()
+        console.log(form, "form")
+        const something = await addBlogPost(form)
       }}
+      style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
     >
+      <label htmlFor="title">Title</label>
       <input
+        id="title"
         // type="text"
         // placeholder="Title"
         // name="title"
@@ -63,7 +71,9 @@ const page = () => {
         {...register("title")}
       />
       {errors.title && <p>{errors.title.message}</p>}
+      <label htmlFor="content">Content</label>
       <textarea
+        id="content"
         // placeholder="Content"
         // name="content"
         // onChange={handleChange}
@@ -71,7 +81,9 @@ const page = () => {
         {...register("content")}
       />
       {errors.content && <p>{errors.content.message}</p>}
+      <label htmlFor="author">Author</label>
       <input
+        id="author"
         // type="text"
         // placeholder="Author"
         // name="author"
@@ -80,7 +92,9 @@ const page = () => {
         {...register("author")}
       />
       {errors.author && <p>{errors.author.message}</p>}
+      <label htmlFor="views">Views</label>
       <input
+        id="views"
         // type="number"
         // placeholder="views"
         // name="views"

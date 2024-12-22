@@ -42,8 +42,10 @@ export const deletePet = async (petId: number) => {
 }
 
 export const addBlogPost = async (blogPost: InsertBlogPost) => {
+  console.log('triggered')
   try {
     const parsed = insertBlogPostSchema.parse(blogPost)
+    console.log(parsed, 'parsed')
     await db.insert(blogPostFromDb).values(parsed).execute()
     return { success: true }
   } catch (error) {
