@@ -36,5 +36,5 @@ export type SelectBlogPost = InferSelectModel<typeof blogPost>
 export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
 export const insertBlogPostSchema = createInsertSchema(blogPost, {
-  views: (schema) => z.coerce.number(),
+  views: (_) => z.coerce.number().({ message: "Views must be a number" }),
 })
