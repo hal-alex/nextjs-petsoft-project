@@ -38,4 +38,6 @@ export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
 export const insertBlogPostSchema = createInsertSchema(blogPost, {
   views: (schema) => z.coerce.number({ message: "Views must be a number" }),
-}).transform((data) => ({ ...data, author: data.author ?? "Alex" }))
+})
+
+// export const insertBlogPostSchema = createInsertSchema(blogPost)

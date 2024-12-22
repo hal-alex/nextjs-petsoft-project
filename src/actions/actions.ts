@@ -42,11 +42,15 @@ export const deletePet = async (petId: number) => {
 }
 
 export const addBlogPost = async (blogPost: InsertBlogPost) => {
-  console.log('triggered')
+  console.log("triggered")
+  const validatedPost = insertBlogPostSchema.safeParse(blogPost)
+
+  if (!validatedPost.success) {
+    return { error: validatedPost.error }
+  }
+
   try {
-    const parsed = insertBlogPostSchema.parse(blogPost)
-    console.log(parsed, 'parsed')
-    await db.insert(blogPostFromDb).values(parsed).execute()
+    await db.insert(blogPostFromDb).values(validatedPost.data).execute()
     return { success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {

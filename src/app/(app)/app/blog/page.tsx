@@ -52,10 +52,9 @@ const page = () => {
         e.preventDefault()
 
         const result = await trigger()
-        console.log(result)
-        if (!result) return
+        // console.log(result)
+        // if (!result) return
         const form = getValues()
-        console.log(form, "form")
         const something = await addBlogPost(form)
       }}
       style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
