@@ -2,7 +2,6 @@
 
 import { db } from "@/db/connection"
 import {
-  InsertBlogPost,
   InsertPet,
   pets,
   blogPost as blogPostFromDb,
@@ -10,6 +9,7 @@ import {
 } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+import { newInserBlogPostSchema } from "@/app/utils/validators"
 import { z } from "zod"
 
 export const addPet = async (pet: InsertPet) => {
@@ -41,16 +41,12 @@ export const deletePet = async (petId: number) => {
   }
 }
 
-export const addBlogPost = async (blogPost: InsertBlogPost) => {
-  console.log("triggered")
-  const validatedPost = insertBlogPostSchema.safeParse(blogPost)
 
-  if (!validatedPost.success) {
-    return { error: validatedPost.error }
-  }
-
+export const addBlogPost = async (blogPost: unknown) => {
+  console.log(blogPost)
   try {
-    await db.insert(blogPostFromDb).values(validatedPost.data).execute()
+    const parsed = newInserBlogPostSchema.parse(blogPost)
+    await db.insert(blogPostFromDb).values(parsed).execute()
     return { success: true }
   } catch (error) {
     if (error instanceof z.ZodError) {

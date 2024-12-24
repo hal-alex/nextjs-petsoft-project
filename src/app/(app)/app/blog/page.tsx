@@ -6,38 +6,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 const page = () => {
-  // const [form, setForm] = useState<InsertBlogPost>({
-  //   title: "",
-  //   content: "",
-  //   author: "",
-  //   views: 0,
-  // })
-
-  // console.log(form)
-
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  // ) => {
-  //   setForm({
-  //     ...form,
-  //     [e.target.name]: e.target.value,
-  //   })
-  // }
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   const error = await addBlogPost(form)
-  //   if (error.success) {
-  //     setForm({
-  //       title: "",
-  //       content: "",
-  //       author: "",
-  //       views: 0,
-  //     })
-  //   }
-  //   console.log(error)
-  // }
-
   const {
     register,
     handleSubmit,
@@ -46,16 +14,29 @@ const page = () => {
     trigger,
   } = useForm<InsertBlogPost>({ resolver: zodResolver(insertBlogPostSchema) })
 
+  const [apiErrors, setApiErrors] = useState()
+
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault()
 
-        const result = await trigger()
+        // const result = await trigger()
         // console.log(result)
         // if (!result) return
         const form = getValues()
-        const something = await addBlogPost(form)
+        form.views = Number(form.views)
+
+        const result = await addBlogPost(form)
+
+        console.log(result.error)
+        if (result.error) {
+          const errors = {}
+          result.error.forEach((item) => (errors[item.path[0]] = item.message))
+          setApiErrors(errors)
+          console.log(errors)
+          return
+        }
       }}
       style={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
     >
@@ -69,7 +50,8 @@ const page = () => {
         // onChange={handleChange}
         {...register("title")}
       />
-      {errors.title && <p>{errors.title.message}</p>}
+      {errors.title && <p>{errors.title}</p>}
+      {apiErrors?.title && <p>{apiErrors.title}</p>}
       <label htmlFor="content">Content</label>
       <textarea
         id="content"
@@ -79,7 +61,8 @@ const page = () => {
         // value={form.content}
         {...register("content")}
       />
-      {errors.content && <p>{errors.content.message}</p>}
+      {errors.content && <p>{errors.content}</p>}
+      {apiErrors?.content && <p>{apiErrors.content}</p>}
       <label htmlFor="author">Author</label>
       <input
         id="author"
@@ -90,18 +73,19 @@ const page = () => {
         // onChange={handleChange}
         {...register("author")}
       />
-      {errors.author && <p>{errors.author.message}</p>}
+      {errors.author && <p>{errors.author}</p>}
       <label htmlFor="views">Views</label>
       <input
         id="views"
-        // type="number"
+        type="number"
         // placeholder="views"
         // name="views"
         // value={form.views ?? ""}
         // onChange={handleChange}
         {...register("views")}
       />
-      {errors.views && <p>{errors.views.message}</p>}
+      {errors.views && <p>{errors.views}</p>}
+      {apiErrors?.views && <p>{apiErrors.views}</p>}
       <button type="submit">Submit</button>
     </form>
   )
