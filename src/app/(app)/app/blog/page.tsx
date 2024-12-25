@@ -4,6 +4,11 @@ import { InsertBlogPost, insertBlogPostSchema } from "@/db/schema"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { newInserBlogPostSchema } from "@/app/utils/validators"
+
+type ApiErrors = {
+  [key: string]: string
+}
 
 const page = () => {
   const {
@@ -12,18 +17,18 @@ const page = () => {
     formState: { errors },
     getValues,
     trigger,
-  } = useForm<InsertBlogPost>({ resolver: zodResolver(insertBlogPostSchema) })
+  } = useForm<InsertBlogPost>({ resolver: zodResolver(newInserBlogPostSchema) })
 
-  const [apiErrors, setApiErrors] = useState()
+  const [apiErrors, setApiErrors] = useState<ApiErrors>()
 
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault()
 
-        // const result = await trigger()
-        // console.log(result)
-        // if (!result) return
+        const triggerResult = await trigger()
+        console.log(triggerResult)
+        if (!triggerResult) return
         const form = getValues()
         form.views = Number(form.views)
 
@@ -50,7 +55,7 @@ const page = () => {
         // onChange={handleChange}
         {...register("title")}
       />
-      {errors.title && <p>{errors.title}</p>}
+      {errors.title && <p>{errors.title.message}</p>}
       {apiErrors?.title && <p>{apiErrors.title}</p>}
       <label htmlFor="content">Content</label>
       <textarea
@@ -61,7 +66,7 @@ const page = () => {
         // value={form.content}
         {...register("content")}
       />
-      {errors.content && <p>{errors.content}</p>}
+      {errors.content && <p>{errors.content.message}</p>}
       {apiErrors?.content && <p>{apiErrors.content}</p>}
       <label htmlFor="author">Author</label>
       <input
@@ -73,7 +78,7 @@ const page = () => {
         // onChange={handleChange}
         {...register("author")}
       />
-      {errors.author && <p>{errors.author}</p>}
+      {errors.author && <p>{errors.author.message}</p>}
       <label htmlFor="views">Views</label>
       <input
         id="views"
@@ -83,8 +88,9 @@ const page = () => {
         // value={form.views ?? ""}
         // onChange={handleChange}
         {...register("views")}
+        defaultValue={0}
       />
-      {errors.views && <p>{errors.views}</p>}
+      {errors.views && <p>{errors.views.message}</p>}
       {apiErrors?.views && <p>{apiErrors.views}</p>}
       <button type="submit">Submit</button>
     </form>
