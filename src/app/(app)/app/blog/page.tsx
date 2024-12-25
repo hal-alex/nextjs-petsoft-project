@@ -17,7 +17,13 @@ const page = () => {
     formState: { errors },
     getValues,
     trigger,
-  } = useForm<InsertBlogPost>({ resolver: zodResolver(newInserBlogPostSchema) })
+  } = useForm<InsertBlogPost>({
+    resolver: zodResolver(newInserBlogPostSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  })
 
   const [apiErrors, setApiErrors] = useState<ApiErrors>()
 
