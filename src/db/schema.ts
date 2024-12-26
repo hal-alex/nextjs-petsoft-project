@@ -8,8 +8,18 @@ import {
 } from "drizzle-orm/pg-core"
 import { InferSelectModel, InferInsertModel } from "drizzle-orm"
 import { createInsertSchema } from "drizzle-zod"
-import { z } from "zod"
-import { schema } from "@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js"
+import { relations } from "drizzle-orm"
+
+export const user = pgTable("user", {
+  id: serial().primaryKey().notNull(),
+  email: varchar("email").notNull().unique(),
+  hashedPassword: varchar("hashed_password").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+})
+
+export const userRelations = relations(user, ({ many }) => ({
+  pets: many(user),
+}))
 
 export const pets = pgTable("pets", {
   id: serial().primaryKey().notNull(),
@@ -20,7 +30,17 @@ export const pets = pgTable("pets", {
   notes: text("notes"),
   updatedAt: timestamp("updated_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  userId: integer("user_id")
+    .references(() => user.id)
+    .notNull(),
 })
+
+export const petsRelations = relations(pets, ({ one }) => ({
+  user: one(user, {
+    fields: [pets.userId],
+    references: [user.id],
+  }),
+}))
 
 export const blogPost = pgTable("blog_post", {
   id: integer().generatedAlwaysAsIdentity().primaryKey(),
@@ -37,6 +57,8 @@ export type InsertPet = InferInsertModel<typeof pets>
 export type SelectBlogPost = InferSelectModel<typeof blogPost>
 export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
+export type SelectUser = InferSelectModel<typeof user>
+export type InsertUser = InferInsertModel<typeof user>
+
 // this schema does not work
 export const insertBlogPostSchema = createInsertSchema(blogPost)
-

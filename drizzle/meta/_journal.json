@@ -15,6 +15,13 @@
       "when": 1734887820469,
       "tag": "0001_chilly_sphinx",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735249652801,
+      "tag": "0002_spicy_mulholland_black",
+      "breakpoints": true
     }
   ]
 }
