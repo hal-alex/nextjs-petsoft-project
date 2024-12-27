@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <main>
       <h1>Log In</h1>
-      <AuthForm />
+      <AuthForm authType="login" />
       <p>
         Don't have an account? <Link href="/signup">Sign up here</Link>
       </p>

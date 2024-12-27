@@ -27,7 +27,7 @@ const seedDb = async () => {
       notes: "Fluffy is a very good dog",
       imageUrl:
         "https://bytegrad.com/course-assets/react-nextjs/pet-placeholder.png",
-      userId: 3,
+      userId: 1,
     },
   ]
 
