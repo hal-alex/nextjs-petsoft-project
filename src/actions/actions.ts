@@ -11,7 +11,6 @@ import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { newInserBlogPostSchema } from "@/app/utils/validators"
 import { z } from "zod"
-import { signIn } from "@/app/utils/auth"
 
 export const addPet = async (pet: InsertPet) => {
   try {
@@ -57,11 +56,3 @@ export const addBlogPost = async (blogPost: unknown) => {
 }
 
 // user actions
-
-export async function logIn(formData: FormData) {
-  const authData = Object.fromEntries(formData.entries())
-
-  console.log(authData)
-
-  await signIn("credentials", authData)
-}

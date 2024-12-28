@@ -1,12 +1,12 @@
-import { logIn } from "@/actions/actions"
+// import { logIn } from "@/actions/actions"
 
 type AuthForm = { authType: "login" | "signup" }
 
 const AuthForm = ({ authType }: AuthForm) => {
   return (
     <form
-    
-      action={logIn}
+
+    // action={logIn}
     >
       <div>
         <label htmlFor="email">Email</label>
