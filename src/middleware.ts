@@ -14,6 +14,7 @@ export async function middleware(request: NextRequest) {
     new URL("/api/user", request.nextUrl.origin).toString(),
   )
 
+  
   const body = await response.json()
 
   console.log(body, "body")
