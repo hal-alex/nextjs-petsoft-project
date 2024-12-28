@@ -13,8 +13,18 @@ import { relations } from "drizzle-orm"
 export const user = pgTable("user", {
   id: serial().primaryKey().notNull(),
   email: varchar("email").notNull().unique(),
-  hashedPassword: varchar("hashed_password").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+})
+
+export const sessionTable = pgTable("session", {
+  id: text("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.id),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
 })
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -59,6 +69,9 @@ export type InsertBlogPost = InferInsertModel<typeof blogPost>
 
 export type SelectUser = InferSelectModel<typeof user>
 export type InsertUser = InferInsertModel<typeof user>
+
+export type SelectSession = InferSelectModel<typeof sessionTable>
+export type InsertSession = InferInsertModel<typeof sessionTable>
 
 // this schema does not work
 export const insertBlogPostSchema = createInsertSchema(blogPost)

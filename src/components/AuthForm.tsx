@@ -1,12 +1,16 @@
-// import { logIn } from "@/actions/actions"
+import { createSession, generateSessionToken } from "@/app/utils/auth"
 
 type AuthForm = { authType: "login" | "signup" }
 
 const AuthForm = ({ authType }: AuthForm) => {
   return (
     <form
+      action={async () => {
+        "use server"
+        const token = generateSessionToken()
 
-    // action={logIn}
+        await createSession(token, 2)
+      }}
     >
       <div>
         <label htmlFor="email">Email</label>
