@@ -13,7 +13,6 @@ import { relations } from "drizzle-orm"
 export const user = pgTable("user", {
   id: serial().primaryKey().notNull(),
   email: varchar("email").notNull().unique(),
-  hashedPassword: varchar("hashed_password").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
