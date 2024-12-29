@@ -5,6 +5,7 @@ import {
   saltAndHashPassword,
 } from "@/app/utils/authenticationUtils"
 
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
