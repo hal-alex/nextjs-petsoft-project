@@ -1,5 +1,3 @@
-import { createSession, generateSessionToken } from "@/app/utils/auth"
-
 type AuthForm = { authType: "login" | "signup" }
 
 const AuthForm = ({ authType }: AuthForm) => {
@@ -7,9 +5,6 @@ const AuthForm = ({ authType }: AuthForm) => {
     <form
       action={async () => {
         "use server"
-        const token = generateSessionToken()
-
-        await createSession(token, 2)
       }}
     >
       <div>
