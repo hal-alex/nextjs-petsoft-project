@@ -1,5 +1,6 @@
 import AuthForm from "@/components/AuthForm"
 import Link from "next/link"
+import { toast } from "react-toastify"
 
 const SignUp = () => {
   return (

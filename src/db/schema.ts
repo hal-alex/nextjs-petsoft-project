@@ -76,3 +76,5 @@ export type InsertSession = InferInsertModel<typeof sessionTable>
 
 // this schema does not work
 export const insertBlogPostSchema = createInsertSchema(blogPost)
+
+export const insertUserSchema = createInsertSchema(user)

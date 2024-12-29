@@ -8,3 +8,12 @@ export const newInserBlogPostSchema = z.object({
   views: z.coerce.number(),
   createdAt: z.date().optional(),
 })
+
+export const newUserEmailSchema = z.string().email().nonempty()
+
+export const newUserPasswordSchema = z.string().min(5).nonempty()
+
+export const newUserSignUpSchema = z.object({
+  email: newUserEmailSchema,
+  password: newUserPasswordSchema,
+})

@@ -16,7 +16,10 @@ const seedDb = async () => {
 
   seedUsers.map(async (seedUser) => {
     const hashedPassword = await bcrypt.hash(seedUser.hashedPassword, 10)
-    await db.insert(user).values({ ...seedUser, hashedPassword })
+    await db
+      .insert(user)
+      .values({ ...seedUser, hashedPassword })
+      .returning()
   })
 
   const petsSeed: InsertPet[] = [
