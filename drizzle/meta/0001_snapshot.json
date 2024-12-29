@@ -1,6 +1,6 @@
 {
-  "id": "dae45382-ea2d-4a80-a195-0883789db79c",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "302b2ac8-c0e3-4adb-8e85-c4558c748abe",
+  "prevId": "dae45382-ea2d-4a80-a195-0883789db79c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -204,6 +204,12 @@
         },
         "email": {
           "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hashed_password": {
+          "name": "hashed_password",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
