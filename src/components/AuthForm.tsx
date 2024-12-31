@@ -1,5 +1,5 @@
 "use client"
-import { signIn } from "@/app/utils/auth"
+import { signIn, signUp } from "@/app/utils/auth"
 import { redirect } from "next/navigation"
 import { toast } from "react-toastify"
 
@@ -13,13 +13,16 @@ const AuthForm = ({ authType }: AuthForm) => {
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
-    if (authType === "login") {
-      const success = await signIn(email, password)
-      if (success) {
-        redirect("/app")
-      } else {
-        toast.error("Invalid email or password")
-      }
+    const success =
+      authType === "login"
+        ? await signIn(email, password)
+        : await signUp(email, password)
+
+    // console.log(success, "success")
+    if (success) {
+      redirect("/app")
+    } else {
+      toast.error("Invalid email or password")
     }
   }
 
