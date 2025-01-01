@@ -5,6 +5,9 @@ import PetContextProvider from "@/app/context/pet-context-provider"
 import SearchContextProvider from "@/app/context/search-context-provider"
 import { DialogProvider } from "@/app/context/dialog-context-provider"
 import { getAllPets } from "@/db/queries"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
+import { validateSessionToken } from "@/app/utils/auth"
 
 type LayoutProps = {
   children: React.ReactNode
@@ -17,6 +20,19 @@ export const metadata: Metadata = {
 
 const Layout = async ({ children }: LayoutProps) => {
   const response = await getAllPets()
+
+  const cookieStore = await cookies()
+  const sessionToken = cookieStore.get("session-token")?.value
+
+  if (!sessionToken) {
+    return redirect("/login")
+  }
+
+  const isValidated = await validateSessionToken(sessionToken)
+
+  if (!isValidated.session) {
+    return redirect("/login")
+  }
 
   return (
     <>

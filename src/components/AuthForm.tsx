@@ -1,11 +1,13 @@
 "use client"
 import { signIn, signUp } from "@/app/utils/auth"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
 type AuthForm = { authType: "login" | "signup" }
 
 const AuthForm = ({ authType }: AuthForm) => {
+  const router = useRouter()
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -19,8 +21,8 @@ const AuthForm = ({ authType }: AuthForm) => {
         : await signUp(email, password)
 
     // console.log(success, "success")
-    if (success) {
-      redirect("/app")
+    if (success.success) {
+      router.push("/app")
     } else {
       toast.error("Invalid email or password")
     }

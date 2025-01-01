@@ -10,6 +10,7 @@ import {
   encodeHexLowerCase,
 } from "@oslojs/encoding"
 import { sha256 } from "@oslojs/crypto/sha2"
+import { cookies } from "next/headers"
 
 // for sign in, we need to take the entered password and
 // use bcrypt.compare to compare the string to the hashed password
@@ -39,13 +40,13 @@ export const signIn = async (email: string, password: string) => {
   const isEmailFine = await isUserEmailFine(email)
 
   if (!isEmailFine) {
-    return false
+    return { success: false, token: null }
   }
 
   const parsedUser = newUserSignUpSchema.safeParse({ email, password })
 
   if (!parsedUser.success) {
-    return false
+    return { success: false, token: null }
   }
 
   const foundUser = await db
@@ -60,10 +61,22 @@ export const signIn = async (email: string, password: string) => {
   )
 
   if (!isValidPassword) {
-    return false
+    return { success: false, token: null }
   }
 
-  return true
+  const rawToken = await generateSessionToken()
+
+  await createSession(rawToken, foundUser[0].id)
+
+  const cookieStore = await cookies()
+
+  cookieStore.set("session-token", rawToken, {
+    httpOnly: true,
+    secure: true,
+    path: "/",
+    maxAge: 30 * 24 * 60 * 60,
+  })
+  return { success: true }
 }
 
 // also need to return session token for this function
@@ -72,13 +85,13 @@ export const signUp = async (email: string, password: string) => {
   const isEmailFine = await isUserEmailFine(email)
 
   if (isEmailFine) {
-    return false
+    return { success: false, token: null }
   }
 
   const parsedUser = newUserSignUpSchema.safeParse({ email, password })
 
   if (!parsedUser.success) {
-    return false
+    return { success: false, token: null }
   }
 
   const hashedPassword = await bcrypt.hash(parsedUser.data.password, 10)
@@ -88,13 +101,15 @@ export const signUp = async (email: string, password: string) => {
     .values({ email: parsedUser.data.email, hashedPassword })
     .returning()
 
-  await createSession(await generateSessionToken(), newUser[0].id)
+  const rawToken = await generateSessionToken()
 
-  return true
+  await createSession(rawToken, newUser[0].id)
+
+  return { success: true, token: rawToken }
 }
 
 export async function generateSessionToken(): Promise<string> {
-  const bytes = new Uint8Array(20)
+  const bytes = new Uint8Array(100)
   crypto.getRandomValues(bytes)
   const token = encodeBase32LowerCaseNoPadding(bytes)
   return token
@@ -118,11 +133,15 @@ export async function validateSessionToken(
   token: string,
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+
+
   const result = await db
     .select({ user: userSchema, session: sessionTable })
     .from(sessionTable)
     .innerJoin(userSchema, eq(sessionTable.userId, userSchema.id))
     .where(eq(sessionTable.id, sessionId))
+
+ 
   if (result.length < 1) {
     return { session: null, user: null }
   }
