@@ -134,14 +134,12 @@ export async function validateSessionToken(
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
 
-
   const result = await db
     .select({ user: userSchema, session: sessionTable })
     .from(sessionTable)
     .innerJoin(userSchema, eq(sessionTable.userId, userSchema.id))
     .where(eq(sessionTable.id, sessionId))
 
- 
   if (result.length < 1) {
     return { session: null, user: null }
   }
@@ -169,3 +167,8 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 export type SessionValidationResult =
   | { session: SelectSession; user: SelectUser }
   | { session: null; user: null }
+
+export const getUser = async (authToken: string) => {
+  const session = await validateSessionToken(authToken)
+  return session.user
+}
