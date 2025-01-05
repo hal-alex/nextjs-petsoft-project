@@ -161,7 +161,14 @@ export async function validateSessionToken(
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
-  await db.delete(sessionTable).where(eq(sessionTable.id, sessionId))
+  console.log(sessionId)
+  const encodedSessionId = encodeHexLowerCase(
+    sha256(new TextEncoder().encode(sessionId)),
+  )
+
+  console.log(encodedSessionId)
+
+  await db.delete(sessionTable).where(eq(sessionTable.id, encodedSessionId))
 }
 
 export type SessionValidationResult =
