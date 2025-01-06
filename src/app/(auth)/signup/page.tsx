@@ -1,8 +1,15 @@
+import { isLoggedIn } from "@/app/utils/auth"
 import AuthForm from "@/components/AuthForm"
 import Link from "next/link"
-import { toast } from "react-toastify"
+import { redirect } from "next/navigation"
 
-const SignUp = () => {
+const SignUp = async () => {
+  const isLoggedInUser = await isLoggedIn()
+
+  if (isLoggedInUser) {
+    redirect("/app/dashboard")
+  }
+
   return (
     <main>
       <h1>Sign Up</h1>

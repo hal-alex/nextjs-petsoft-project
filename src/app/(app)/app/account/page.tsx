@@ -1,26 +1,24 @@
 import ContentBlock from "@/components/ContentBlock"
 import style from "./page.module.css"
-import { getUser, invalidateSession } from "@/app/utils/auth"
-import { cookies } from "next/headers"
+import { getUser, isLoggedIn } from "@/app/utils/auth"
 import { redirect } from "next/navigation"
 import SignOutButton from "@/components/SignOutButton"
 
 const AccountPage = async () => {
-  const cookieStore = await cookies()
-  const sessionToken = cookieStore.get("session-token")?.value
+  const isLoggedInUser = await isLoggedIn()
 
-  if (!sessionToken) {
+  if (!isLoggedInUser) {
     return redirect("/login")
   }
 
-  const user = await getUser(sessionToken)
+  const user = await getUser(isLoggedInUser.sessionToken)
 
   return (
     <main>
       <h1>Account</h1>
       <ContentBlock className={style.redBackground}>
         <p>Logged in as {user?.email}</p>
-        <SignOutButton sessionToken={sessionToken} />
+        <SignOutButton sessionToken={isLoggedInUser.sessionToken} />
       </ContentBlock>
     </main>
   )

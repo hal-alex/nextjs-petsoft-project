@@ -179,3 +179,37 @@ export const getUser = async (authToken: string) => {
   const session = await validateSessionToken(authToken)
   return session.user
 }
+
+export const isLoggedIn = async () => {
+  const cookieStore = await cookies()
+  const sessionToken = cookieStore.get("session-token")?.value
+
+  if (!sessionToken) {
+    return false
+  }
+
+  const isValidated = await validateSessionToken(sessionToken)
+
+  if (!isValidated.session) {
+    return false
+  }
+
+  return { sessionToken }
+}
+
+export const getUserFromSession = async () => {
+  const cookieStore = await cookies()
+  const sessionToken = cookieStore.get("session-token")?.value
+
+  if (!sessionToken) {
+    return null
+  }
+
+  const isValidated = await validateSessionToken(sessionToken)
+
+  if (!isValidated.session) {
+    return null
+  }
+
+  return isValidated.user
+}
