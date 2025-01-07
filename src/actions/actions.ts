@@ -11,10 +11,46 @@ import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { newInserBlogPostSchema } from "@/app/utils/validators"
 import { z } from "zod"
+import { getUserFromSession } from "@/app/utils/auth"
+
+type PetMutationType = "edit" | "delete"
+
+const checkAuthForPetMutation = async (
+  mutationType: PetMutationType,
+  petId: number,
+) => {
+  // authentication check - user is registered and is logged in
+  const user = await getUserFromSession()
+  const errorText = `Could not ${mutationType} pet`
+
+  if (!user) {
+    return { message: errorText }
+  }
+
+  // authorization check - user is the owner of the pet
+  const petToMutate = await db.select().from(pets).where(eq(pets.id, petId))
+
+  if (petToMutate.length < 1) {
+    return { message: errorText }
+  }
+
+  if (petToMutate[0].userId !== user.id) {
+    return { message: errorText }
+  }
+}
 
 export const addPet = async (pet: InsertPet) => {
+  const user = await getUserFromSession()
+
+  if (!user) {
+    return { message: "Could not add pet" }
+  }
+
   try {
-    await db.insert(pets).values(pet).execute()
+    await db
+      .insert(pets)
+      .values({ ...pet, userId: user.id })
+      .execute()
 
     revalidatePath("/app", "layout")
   } catch (error) {
@@ -23,6 +59,12 @@ export const addPet = async (pet: InsertPet) => {
 }
 
 export const updatePet = async (petId: number, editedPet: InsertPet) => {
+  const canNotMutate = await checkAuthForPetMutation("edit", petId)
+
+  if (canNotMutate?.message) {
+    return canNotMutate
+  }
+
   try {
     await db.update(pets).set(editedPet).where(eq(pets.id, petId)).execute()
     revalidatePath("/app", "layout")
@@ -33,6 +75,14 @@ export const updatePet = async (petId: number, editedPet: InsertPet) => {
 
 export const deletePet = async (petId: number) => {
   // await new Promise((resolve) => setTimeout(resolve, 3000))
+
+  const canNotMutate = await checkAuthForPetMutation("delete", petId)
+
+  if (canNotMutate?.message) {
+    return canNotMutate
+  }
+
+  // db mutation
   try {
     await db.delete(pets).where(eq(pets.id, petId)).execute()
     revalidatePath("/app", "layout")

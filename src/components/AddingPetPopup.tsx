@@ -15,13 +15,13 @@ const AddingPetPopup = ({ actionType }: AddingPetPopupProps) => {
   const { selectedPet } = usePetContext()
   const { closeDialog } = useDialog()
 
-  const [formData, setFormData] = useState<InsertPet>(() => ({
+  const [formData, setFormData] = useState<Omit<InsertPet, "userId">>({
     name: selectedPet?.name ?? "",
     ownerName: selectedPet?.ownerName ?? "",
     age: selectedPet?.age ?? 0,
     imageUrl: selectedPet?.imageUrl ?? "",
     notes: selectedPet?.notes ?? "",
-  }))
+  })
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
