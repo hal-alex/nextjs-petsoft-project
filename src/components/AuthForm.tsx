@@ -1,5 +1,6 @@
 "use client"
 import { signIn, signUp } from "@/app/utils/auth"
+import { newUserEmailSchema } from "@/app/utils/validators"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
@@ -45,11 +46,18 @@ const AuthForm = ({ authType }: AuthForm) => {
     >
       <div>
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
+        <input type="email" id="email" name="email" required maxLength={100} />
       </div>
       <div>
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          maxLength={100}
+          minLength={5}
+        />
       </div>
       <button type="submit">
         {authType === "login" ? "Log In" : "Sign up"}

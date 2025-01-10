@@ -6,6 +6,7 @@ import ContentBlock from "@/components/ContentBlock"
 import Stats from "@/components/Stats"
 import DialogButton from "@/components/DialogButton"
 import AddingPetPopup from "@/components/AddingPetPopup"
+import PetSearch from "@/components/PetSearch"
 
 const Dashboard = () => {
   // console.log(process.browser, "process.browser")
@@ -43,6 +44,9 @@ const Dashboard = () => {
             <PetDetails />
           </ContentBlock>
         </div>
+      </div>
+      <div>
+        <PetSearch />
       </div>
     </main>
   )
