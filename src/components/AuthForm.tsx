@@ -2,12 +2,16 @@
 import { signIn, signUp } from "@/app/utils/auth"
 import { newUserEmailSchema } from "@/app/utils/validators"
 import { useRouter } from "next/navigation"
+import { useFormStatus } from "react-dom"
 import { toast } from "react-toastify"
+import AuthFormButton from "./AuthFormButton"
 
 type AuthForm = { authType: "login" | "signup" }
 
 const AuthForm = ({ authType }: AuthForm) => {
   const router = useRouter()
+  const { pending } = useFormStatus()
+  console.log(pending, "pending")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -59,9 +63,7 @@ const AuthForm = ({ authType }: AuthForm) => {
           minLength={5}
         />
       </div>
-      <button type="submit">
-        {authType === "login" ? "Log In" : "Sign up"}
-      </button>
+      <AuthFormButton type={authType} />
     </form>
   )
 }

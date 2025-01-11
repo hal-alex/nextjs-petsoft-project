@@ -9,8 +9,13 @@ export const getPetByPetId = async (petId: number) => {
 }
 
 export const searchPetFromDb = async (searchTerm: string) => {
-  return await db
-    .select()
-    .from(pets)
-    .where(ilike(pets.name, `%${searchTerm}%`))
+  try {
+    return await db
+      .select()
+      .from(pets)
+      .where(ilike(pets.name, `%${searchTerm}%`))
+  } catch (error) {
+    console.error("Error searching pets:", error)
+    throw new Error("Failed to search pets")
+  }
 }

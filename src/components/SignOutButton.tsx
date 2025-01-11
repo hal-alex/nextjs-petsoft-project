@@ -2,13 +2,19 @@
 
 import { invalidateSession } from "@/app/utils/auth"
 import { redirect } from "next/navigation"
+import { useTransition } from "react"
 
 const SignOutButton = ({ sessionToken }: { sessionToken: string }) => {
+  const [isPending, startTransition] = useTransition()
+
   return (
     <button
+      disabled={isPending}
       onClick={async () => {
-        await invalidateSession(sessionToken)
-        redirect("/login")
+        startTransition(async () => {
+          await invalidateSession(sessionToken)
+          redirect("/login")
+        })
       }}
     >
       Sign Out

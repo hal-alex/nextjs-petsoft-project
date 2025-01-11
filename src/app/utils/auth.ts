@@ -11,6 +11,7 @@ import {
 } from "@oslojs/encoding"
 import { sha256 } from "@oslojs/crypto/sha2"
 import { cookies } from "next/headers"
+import { set } from "zod"
 
 // for sign in, we need to take the entered password and
 // use bcrypt.compare to compare the string to the hashed password
@@ -19,7 +20,7 @@ import { cookies } from "next/headers"
 // for sign up, need to check if the user email already exists
 // then hash the password and insert the user into the database
 
-export const isUserEmailFine = async (email: string) => {
+export const isUserEmailFine = async (email: unknown) => {
   const parsedEmail = newUserEmailSchema.safeParse(email)
 
   if (!parsedEmail.success) {
@@ -36,7 +37,7 @@ export const isUserEmailFine = async (email: string) => {
 }
 
 // need to return session token for this function
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (email: unknown, password: unknown) => {
   const isEmailFine = await isUserEmailFine(email)
 
   if (!isEmailFine) {
@@ -81,7 +82,10 @@ export const signIn = async (email: string, password: string) => {
 
 // also need to return session token for this function
 // this is to that auto-log in can be implemented
-export const signUp = async (email: string, password: string) => {
+export const signUp = async (email: unknown, password: unknown) => {
+  await new Promise(async (resolve, reject) => {
+    setTimeout(resolve, 1000)
+  })
   const isEmailFine = await isUserEmailFine(email)
 
   if (isEmailFine) {
@@ -161,6 +165,9 @@ export async function validateSessionToken(
 }
 
 export async function invalidateSession(sessionId: string): Promise<void> {
+  await new Promise(async (resolve, reject) => {
+    setTimeout(resolve, 1000)
+  })
   console.log(sessionId)
   const encodedSessionId = encodeHexLowerCase(
     sha256(new TextEncoder().encode(sessionId)),
