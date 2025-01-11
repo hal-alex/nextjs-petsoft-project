@@ -12,6 +12,10 @@ import { revalidatePath } from "next/cache"
 import { newInserBlogPostSchema } from "@/app/utils/validators"
 import { z } from "zod"
 import { getUserFromSession } from "@/app/utils/auth"
+import { redirect } from "next/navigation"
+import { line } from "drizzle-orm/pg-core"
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+import { Stripe, loadStripe } from "@stripe/stripe-js"
 
 type PetMutationType = "edit" | "delete"
 
@@ -105,4 +109,24 @@ export const addBlogPost = async (blogPost: unknown) => {
   }
 }
 
-// user actions
+export const createCheckoutSession = async () => {
+  const user = await getUserFromSession()
+
+  if (!user) {
+    return { message: "Could not create checkout session" }
+  }
+
+  const checkoutSession = await stripe.checkout.sessions.create({
+    customer_email: user.email,
+    line_items: [
+      {
+        price: "price_1QgAbaDvvYO6jebP55dyWyPG",
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: "https://localhost:3000/payment?success=true",
+    cancel_url: "http://localhost:3000/payment?cancelled=true",
+  })
+  redirect(checkoutSession.url)
+}

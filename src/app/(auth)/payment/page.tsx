@@ -1,8 +1,17 @@
+"use client"
+import { createCheckoutSession } from "@/actions/actions"
+
 const PaymentPage = () => {
   return (
     <main>
       <h1>Access requires payment</h1>
-      <button>Pay now</button>
+      <button
+        onClick={async () => {
+          await createCheckoutSession()
+        }}
+      >
+        Pay now
+      </button>
     </main>
   )
 }
