@@ -15,6 +15,13 @@
       "when": 1735483009779,
       "tag": "0001_dashing_killer_shrike",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1736896369742,
+      "tag": "0002_green_tarot",
+      "breakpoints": true
     }
   ]
 }

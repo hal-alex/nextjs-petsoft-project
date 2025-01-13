@@ -5,6 +5,7 @@ import {
   integer,
   text,
   timestamp,
+  boolean,
 } from "drizzle-orm/pg-core"
 import { InferSelectModel, InferInsertModel } from "drizzle-orm"
 import { createInsertSchema } from "drizzle-zod"
@@ -15,6 +16,7 @@ export const user = pgTable("user", {
   email: varchar("email").notNull().unique(),
   hashedPassword: varchar("hashed_password").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  isPaid: boolean("is_paid").notNull().default(false),
 })
 
 export const sessionTable = pgTable("session", {
