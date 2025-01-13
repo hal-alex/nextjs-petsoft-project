@@ -1,13 +1,14 @@
-"use client"
 import Image from "next/image"
 import styles from "../page.module.css"
 import clsx from "clsx"
 import marketingStyle from "./page.module.css"
 import Link from "next/link"
+import { SButton } from "./styles"
 
 export default function Home() {
   return (
     <main className={clsx(styles.homepageBody)}>
+      <SButton>Test</SButton>
       <Image
         src="https://bytegrad.com/course-assets/react-nextjs/petsoft-preview.png"
         alt="homepage screenshot"
