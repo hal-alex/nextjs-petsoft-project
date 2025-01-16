@@ -11,7 +11,7 @@ import {
 } from "@oslojs/encoding"
 import { sha256 } from "@oslojs/crypto/sha2"
 import { cookies } from "next/headers"
-import { set } from "zod"
+import { redirect } from "next/navigation"
 
 // for sign in, we need to take the entered password and
 // use bcrypt.compare to compare the string to the hashed password
@@ -219,4 +219,18 @@ export const getUserFromSession = async () => {
   }
 
   return isValidated.user
+}
+
+export const hasUserPaid = async () => {
+  const user = await getUserFromSession()
+
+  if (!user) {
+    redirect("/login")
+  }
+
+  if (!user.isPaid) {
+    redirect("/payment")
+  }
+
+  return user.isPaid
 }

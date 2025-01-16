@@ -7,7 +7,7 @@ import { DialogProvider } from "@/app/context/dialog-context-provider"
 import { getAllPets, getPetsByUserId } from "@/db/queries"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { validateSessionToken } from "@/app/utils/auth"
+import { hasUserPaid, validateSessionToken } from "@/app/utils/auth"
 
 type LayoutProps = {
   children: React.ReactNode
@@ -33,6 +33,8 @@ const Layout = async ({ children }: LayoutProps) => {
   if (!isValidated.session) {
     return redirect("/login")
   }
+
+  await hasUserPaid()
 
   return (
     <>

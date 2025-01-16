@@ -9,10 +9,6 @@ import AddingPetPopup from "@/components/AddingPetPopup"
 import PetSearch from "@/components/PetSearch"
 
 const Dashboard = () => {
-  // console.log(process.browser, "process.browser")
-
-  // console.log(typeof window, "typeof window")
-
   return (
     <main>
       <div className={style.seconSection}>
