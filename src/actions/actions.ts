@@ -125,7 +125,7 @@ export const createCheckoutSession = async () => {
       },
     ],
     mode: "payment",
-    success_url: "https://localhost:3000/payment?success=true",
+    success_url: "http://localhost:3000/payment?success=true",
     cancel_url: "http://localhost:3000/payment?cancelled=true",
   })
   redirect(checkoutSession.url)
